@@ -21,6 +21,7 @@ public class FileTest : MonoBehaviour
     {
         public List<Keypoint> keypoints;
     }
+
     Dictionary<string, Keypoint> dicKeypoints;
 
     // Start is called before the first frame update
@@ -28,27 +29,35 @@ public class FileTest : MonoBehaviour
 
 
     {   // Adding information about Right Shoullder keypoints manually 
-        List <Vector3>rsPos = new List<Vector3>();
-        rsPos.Add(new Vector3(1, 2, 3));
-        List<Quaternion> rsRot = new List<Quaternion>();
-        rsRot.Add(new Quaternion(4,5,6,7));
-        List <float> rsTimestamp = new List<float>();
-        rsTimestamp.Add(0.0f);
+        //List<Vector3> rsPos = new List<Vector3>();
+        //rsPos.Add(new Vector3(1, 2, 3));
+        //List<Quaternion> rsRot = new List<Quaternion>();
+        //rsRot.Add(new Quaternion(4, 5, 6, 7));
+        //List<float> rsTimestamp = new List<float>();
+        //rsTimestamp.Add(0.0f);
 
-        // Adding information about Left Leg Keypoint manually
-        List<Vector3> llPos = new List<Vector3>();
-        llPos.Add(new Vector3(8, 9, 10));
-        List<Quaternion> llRot = new List<Quaternion>();
-        llRot.Add(new Quaternion(11, 12, 13, 14));
-        List<float> llTimestamp = new List<float>();
-        llTimestamp.Add(0.0f);
+        //// Adding information about Left Leg Keypoint manually
+        //List<Vector3> llPos = new List<Vector3>();
+        //llPos.Add(new Vector3(8, 9, 10));
+        //List<Quaternion> llRot = new List<Quaternion>();
+        //llRot.Add(new Quaternion(11, 12, 13, 14));
+        //List<float> llTimestamp = new List<float>();
+        //llTimestamp.Add(0.0f);
 
-        
+
         dicKeypoints = new Dictionary<string, Keypoint>();
-        dicKeypoints.Add("RightShoulder", new Keypoint() {name="RightShoulder", timestamp = rsTimestamp,position =rsPos, rotation=rsRot});
-        dicKeypoints.Add("LeftLeg", new Keypoint() { name = "LeftLeg", timestamp = llTimestamp,position = llPos, rotation = llRot });
 
-        SaveKeypoints();
+        //dicKeypoints.Add("rightshoulder", new Keypoint() { name = "rightshoulder", timestamp = rsTimestamp, position = rsPos, rotation = rsRot });
+        //dicKeypoints.Add("leftleg", new Keypoint() { name = "leftleg", timestamp = llTimestamp, position = llPos, rotation = llRot });
+
+        //SaveKeypoints();
+        LoadKeypoints();
+        List<string> keypointsNames = new List<string>(dicKeypoints.Keys);
+        foreach (string theName in keypointsNames)
+        {
+            Debug.Log("Keypoint ID: " + dicKeypoints[theName].name + "   Timestamp:  " + dicKeypoints[theName].timestamp[0].ToString());
+        }
+
 
 
     }
@@ -59,7 +68,16 @@ public class FileTest : MonoBehaviour
         
     }
 
-    void SaveKeypoints()
+    public void LoadKeypoints()
+    {
+        BodyMarkers tempCollection = JsonUtility.FromJson<BodyMarkers>(JsonFiileUtility.LoadJsonFromFile("KeyPointsCollection.json", false));
+        foreach (Keypoint marker in tempCollection.keypoints)
+        {
+           dicKeypoints.Add(marker.name, marker);
+        }
+    }
+
+    public void SaveKeypoints()
     {
         List<string> keypointsnames = new List<string>(dicKeypoints.Keys);
         List<Keypoint> toSaveCollection = new List<Keypoint>();

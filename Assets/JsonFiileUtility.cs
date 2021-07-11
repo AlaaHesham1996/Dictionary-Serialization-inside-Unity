@@ -9,7 +9,17 @@ public class JsonFiileUtility
 {
     
 
-  
+    public static string LoadJsonFromFile (string path, bool isResource)
+    {
+        if (isResource)
+        {
+            return LoadJsonAsResource(path);
+
+        }else
+        {
+            return LoadJsonAsExternalResource(path);
+        }
+    }
 
     public static string  LoadJsonAsResource (string path)
     {
